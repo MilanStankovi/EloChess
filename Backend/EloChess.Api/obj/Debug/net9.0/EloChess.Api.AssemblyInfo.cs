@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EloChess.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a91bb09969774daab46dc7da8adef652884eb28")]
 [assembly: System.Reflection.AssemblyProductAttribute("EloChess.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EloChess.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
