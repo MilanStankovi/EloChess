@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // PostgreSQL
-builder.Services.AddDbContext<EloChessContext>(options =>
+builder.Services.AddDbContext<EloChessDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();

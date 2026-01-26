@@ -9,9 +9,9 @@ namespace EloChess.Api.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
-        private readonly EloChessContext _context;
+        private readonly EloChessDbContext _context;
 
-        public PlayersController(EloChessContext context)
+        public PlayersController(EloChessDbContext context)
         {
             _context = context;
         }
