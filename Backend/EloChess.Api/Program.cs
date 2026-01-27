@@ -1,7 +1,7 @@
 using EloChess.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
+using EloChess.Api.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
@@ -15,6 +15,15 @@ builder.Services.AddSwaggerGen(c =>
 // PostgreSQL
 builder.Services.AddDbContext<EloChessDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Repository registracija
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IMatchRepository, MatchRepository>();
+builder.Services.AddScoped<IMoveRepository, MoveRepository>();
+builder.Services.AddScoped<IPlayerMatchRepository, PlayerMatchRepository>();
+
+// Controllers
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
