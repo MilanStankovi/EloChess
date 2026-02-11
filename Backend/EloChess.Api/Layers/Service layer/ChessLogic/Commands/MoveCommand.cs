@@ -1,0 +1,176 @@
+using ChessLogic.Pieces;
+using ChessLogic.Moves;
+
+namespace ChessLogic.Commands
+{
+    public class MoveCommand
+    {
+        private readonly Board board;
+        private readonly Piece piece;
+        private readonly Position target;
+
+        private Piece? capturedPiece = null;
+        private bool isEnPassant = false;
+        private bool isCastling = false;
+        private Piece? promotedPiece = null;
+
+        private Position previousPosition;
+
+        public MoveCommand(Board board, Piece piece, Position target)
+        {
+            this.board = board;
+            this.piece = piece;
+            this.target = target;
+
+            // cuvamo prethodnu poziciju za undo
+            previousPosition = piece.Position;
+        }
+
+        public void Execute()
+        {
+            // hvatanje 
+            capturedPiece = board.GetPiece(target);
+            if (piece.Type == PieceType.Pawn)
+            {
+                if (target.File != piece.Position.File && capturedPiece == null)
+                {
+                    int direction = piece.Color == Color.White ? -1 : 1;
+                    Position epPos = new Position(target.Rank + direction, target.File);
+                    capturedPiece = board.GetPiece(epPos);
+                    if (capturedPiece != null)
+                    {
+                        isEnPassant = true;
+                        board.RemovePiece(capturedPiece);
+                    }
+                }
+            }
+            else if (capturedPiece != null)
+            {
+                board.RemovePiece(capturedPiece);
+            }
+
+            // rokada
+            if (piece.Type == PieceType.King && Math.Abs(target.File - piece.Position.File) == 2)
+            {
+                isCastling = true;
+                PerformCastling();
+            }
+
+            // pomeranje figure
+            piece.Position = target;
+            piece.HasMoved = true;
+
+            // promocija
+            if (piece.Type == PieceType.Pawn &&
+                (target.Rank == 0 || target.Rank == Board.Size - 1))
+            {
+                PromotePawn();
+            }
+        }
+
+        public void Undo()
+        {
+            // undo promocije
+            if (promotedPiece != null)
+            {
+                board.RemovePiece(promotedPiece);
+                board.AddPiece(piece);
+                promotedPiece = null;
+            }
+
+            // undo pomeranja
+            piece.Position = previousPosition;
+            piece.HasMoved = false;
+
+            // undo hvatanja
+            if (capturedPiece != null)
+            {
+                board.AddPiece(capturedPiece);
+                capturedPiece = null;
+            }
+
+            // undo rokade
+            if (isCastling)
+            {
+                UndoCastling();
+                isCastling = false;
+            }
+
+            // undo en passant
+            if (isEnPassant)
+            {
+                isEnPassant = false;
+            }
+        }
+
+        private void PerformCastling()
+        {
+            int rank = piece.Position.Rank;
+            if (target.File == 6) // kratka rokada
+            {
+                var rook = board.GetPiece(new Position(rank, 7));
+                rook.Position = new Position(rank, 5);
+                rook.HasMoved = true;
+            }
+            else if (target.File == 2) // duga rokada
+            {
+                var rook = board.GetPiece(new Position(rank, 0));
+                rook.Position = new Position(rank, 3);
+                rook.HasMoved = true;
+            }
+        }
+
+        private void UndoCastling()
+        {
+            int rank = piece.Position.Rank;
+            if (target.File == 6) // kratka rokada
+            {
+                var rook = board.GetPiece(new Position(rank, 5));
+                rook.Position = new Position(rank, 7);
+                rook.HasMoved = false;
+            }
+            else if (target.File == 2) // duga rokada
+            {
+                var rook = board.GetPiece(new Position(rank, 3));
+                rook.Position = new Position(rank, 0);
+                rook.HasMoved = false;
+            }
+        }
+
+        private void PromotePawn(PieceType promoteTo = PieceType.Queen)
+        {
+            board.RemovePiece(piece);
+
+            switch (promoteTo)
+            {
+                case PieceType.Queen:
+                    promotedPiece = new Queen(piece.Color, target);
+                    break;
+                case PieceType.Rook:
+                    promotedPiece = new Rook(piece.Color, target);
+                    break;
+                case PieceType.Bishop:
+                    promotedPiece = new Bishop(piece.Color, target);
+                    break;
+                case PieceType.Knight:
+                    promotedPiece = new Knight(piece.Color, target);
+                    break;
+            }
+
+            board.AddPiece(promotedPiece);
+        }
+
+        public bool IsCapture
+        {
+            get { return capturedPiece != null; }
+        }
+
+        public bool IsPawnMove
+        {
+            get { return piece.Type == PieceType.Pawn; }
+        }
+    }
+}
+
+
+
