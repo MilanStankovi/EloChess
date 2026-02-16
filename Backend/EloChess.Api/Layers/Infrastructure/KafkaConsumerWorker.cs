@@ -14,10 +14,14 @@ public class KafkaConsumerWorker : BackgroundService
     {
         _hubContext = hubContext;
         _topic = settings.Value.Topic; //
+
+        string computerName = Environment.MachineName; 
+        string uniqueGroupId = $"elochess-group-{computerName}";
+
         _config = new ConsumerConfig
         {
             BootstrapServers = settings.Value.BootstrapServers, //
-            GroupId = "elochess-group", //
+            GroupId = uniqueGroupId, //
             AutoOffsetReset = AutoOffsetReset.Earliest, //
             SecurityProtocol = SecurityProtocol.Ssl, //
             SslCaLocation = settings.Value.SslCaLocation, //
