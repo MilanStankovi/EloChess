@@ -9,6 +9,8 @@ public static class PlayerMapper
         {
             Id = p.Id,
             Username = p.Username,
+            Email = p.Email,
+            Password = p.Password,
             EloRating = p.EloRating,
             GamesPlayed = p.GamesPlayed,
             GamesWon = p.GamesWon,
@@ -17,17 +19,19 @@ public static class PlayerMapper
         };
     }
 
-    public static Player ToEntity(PlayerDto dto)
+public static Player ToEntity(PlayerDto dto)
+{
+    return new Player
     {
-        return new Player
-        {
-            Id = dto.Id,
-            Username = dto.Username,
-            EloRating = dto.EloRating,
-            GamesPlayed = dto.GamesPlayed,
-            GamesWon = dto.GamesWon,
-            GamesLost = dto.GamesLost,
-            GamesDrawn = dto.GamesDrawn
-        };
-    }
+        Id = dto.Id,
+        Username = dto.Username,
+        Email = dto.Email,
+        Password = dto.Password,
+        EloRating = dto.EloRating,
+        GamesPlayed = dto.GamesPlayed,
+        GamesWon = dto.GamesWon,
+        GamesLost = dto.GamesLost,
+        GamesDrawn = dto.GamesDrawn
+    };
+}
 }

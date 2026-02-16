@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "HUxNLq+IVdI=",
+  "dgSpecHash": "ILRLaoYJzeo=",
   "success": true,
   "projectFilePath": "C:\\Users\\milan\\fax\\AIPS_GIT\\EloChess\\Backend\\EloChess.Api\\EloChess.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\milan\\.nuget\\packages\\confluent.kafka\\2.13.0\\confluent.kafka.2.13.0.nupkg.sha512",
     "C:\\Users\\milan\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\milan\\.nuget\\packages\\librdkafka.redist\\2.13.0\\librdkafka.redist.2.13.0.nupkg.sha512",
     "C:\\Users\\milan\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.11\\microsoft.aspnetcore.openapi.9.0.11.nupkg.sha512",
     "C:\\Users\\milan\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\milan\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",

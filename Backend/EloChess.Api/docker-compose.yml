@@ -6,15 +6,28 @@ services:
     container_name: elochess-app
     restart: always
     environment:
-      # Glavni URL za konekciju
+      # === NEON BAZA (Sve ostaje identično, nema gubljenja konekcije) ===
       DATABASE_URL: "postgresql://neondb_owner:npg_nCrfTY2hv7Hz@ep-divine-truth-ahz7y6c0-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require"
-      
-      # Razbijeni podaci (ako ih tvoja aplikacija traži pojedinačno)
       DB_HOST: "ep-divine-truth-ahz7y6c0-pooler.c-3.us-east-1.aws.neon.tech"
       DB_PORT: "5432"
       DB_USER: "neondb_owner"
       DB_NAME: "neondb"
       DB_PASSWORD: "npg_nCrfTY2hv7Hz"
       DB_SSL: "require"
+
+      # === AIVEN KAFKA (Dodajemo nove podatke) ===
+      # Zameni PORT onim koji vidiš u Service URI na Aiven panelu
+      KAFKA_BOOTSTRAP_SERVERS: "elochess-kafka-milan09micko-7466.k.aivencloud.com:28269"
+      KAFKA_TOPIC_CHAT: "chat-messages"
+      
+      # Putanje unutar kontejnera gde ćeš mapirati sertifikate
+      KAFKA_SSL_CA_LOCATION: "/app/certs/ca.pem"
+      KAFKA_SSL_CERT_LOCATION: "/app/certs/service.cert"
+      KAFKA_SSL_KEY_LOCATION: "/app/certs/service.key"
+      
     ports:
       - "8080:8080"
+    
+    # Mapiramo lokalni folder sa sertifikatima u Docker kontejner
+    volumes:
+      - ./certs:/app/certs
